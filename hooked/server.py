@@ -87,10 +87,8 @@ def hook():
             stderr=subprocess.PIPE,
             shell=True,
             ).communicate()
-        log.info('Running command: %s' % ' '.join([items['command'],
-                 name, branch]))
-        log.info('    --> STDOUT: %s' % out)
-        log.info('    --> STDERR: %s' % err)
+        log.info('Running command: %s\n    --> STDOUT: %s\n    --> STDERR: %s'
+                 % (' '.join([items['command'], name, branch])))
 
 
 def run():
