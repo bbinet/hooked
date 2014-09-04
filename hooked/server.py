@@ -25,6 +25,18 @@ debug = false
 cfg.read(['/etc/hooked.cfg', './hooked.cfg'])
 
 
+def checkconfig():
+    errors = []
+    hooks = set(cfg.sections())
+    hooks.remove('server')
+    for hook in hooks:
+        if not cfg.has_option(hook, 'command'):
+            errors.append('[%s] hook should have a "command" option.' % hook)
+    if len(errors) > 0:
+        log.error('\n--> '.join(['Aborting... Check config failed:'] + errors))
+        sys.exit(1)
+
+
 @bottle.get('/')
 def index():
     #return bottle.redirect('https://github.com/bbinet/hooked')
@@ -112,6 +124,7 @@ def run():
     if debug:
         log.setLevel(logging.DEBUG)
         bottle.debug(True)
+    checkconfig()
     bottle.run(
         server=cfg.get('server', 'server'),
         host=cfg.get('server', 'host'),
