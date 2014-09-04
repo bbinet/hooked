@@ -38,7 +38,7 @@ def index():
         items = dict(cfg.items(hook))
         resp['hooks'].append({
             'name': hook,
-            'repository': items['repository'],
+            'repository': items.get('repository'),
             'branch': items.get('branch'),
             'command': items['command'],
             'cwd': items.get('cwd'),
