@@ -10,7 +10,7 @@ setup(
     license='MIT',
     author='Bruno Binet',
     author_email='bruno.binet@gmail.com',
-    keywords=['bitbucket', 'github', 'hook', 'post'],
+    keywords=['bitbucket', 'github', 'hook', 'post', 'web', 'webhook'],
     url='https://github.com/bbinet/hooked',
     classifiers=[
         "Development Status :: 3 - Alpha",
