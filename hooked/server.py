@@ -72,6 +72,10 @@ def hook():
 
     hooks = set(cfg.sections())
     hooks.remove('server')
+    resp = {
+        'success': True,
+        'hooks': [],
+        }
     for hook in hooks:
         items = dict(cfg.items(hook))
         if 'repository' in items and name != items['repository']:
@@ -89,6 +93,16 @@ def hook():
             ).communicate()
         log.info('Running command: %s\n    --> STDOUT: %s\n    --> STDERR: %s'
                  % (' '.join([items['command'], name, branch])))
+        resp['hooks'].append({
+            'name': hook,
+            'repository': items.get('repository'),
+            'branch': items.get('branch'),
+            'command': items['command'],
+            'cwd': items.get('cwd'),
+            'stdout': out,
+            'stderr': err,
+        })
+    return resp
 
 
 def run():
