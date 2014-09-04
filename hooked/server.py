@@ -97,6 +97,8 @@ def hook():
 
 def run():
     global cfg
+    if len(sys.argv) > 1:
+        cfg.read(sys.argv[1:])
     debug = cfg.getboolean('server', 'debug')
     if debug:
         log.setLevel(logging.DEBUG)
