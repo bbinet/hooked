@@ -25,7 +25,7 @@ debug = false
 cfg.read(['/etc/hooked.cfg', './hooked.cfg'])
 
 
-def checkconfig():
+def checkcfg():
     errors = []
     hooks = set(cfg.sections())
     hooks.remove('server')
@@ -124,7 +124,7 @@ def run():
     if debug:
         log.setLevel(logging.DEBUG)
         bottle.debug(True)
-    checkconfig()
+    checkcfg()
     bottle.run(
         server=cfg.get('server', 'server'),
         host=cfg.get('server', 'host'),
