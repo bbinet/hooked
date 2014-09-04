@@ -50,6 +50,17 @@ Run the hooked server by running the following command::
 
     (hooked) $ hooked path/to/config.cfg
 
+Then visit http://localhost:8888/, it should return the current configuration
+for this `hooked` server.
+If this works, you are ready to configure GitHub and BitBucket POST request web
+hooks to your `hooked` server listening address, for example:
+http://localhost:8888/.
+
+See:
+
+- https://confluence.atlassian.com/display/BITBUCKET/POST+hook+management
+- https://developer.github.com/webhooks/
+
 Release
 -------
 
