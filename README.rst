@@ -41,7 +41,7 @@ Create a configuration file that looks like::
     #branch = # will match all branches
     command = /path/to/other/script.sh
 
-Note that the `[server]` section is optionnal, the defaults are::
+Note that the `[server]` section is optional, the defaults are::
 
     [server]
     host = localhost
