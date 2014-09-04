@@ -6,7 +6,12 @@ Run command on GitHub and BitBucket POST request hooks.
 Install
 -------
 
-To install `hooked`, do the following steps::
+You can install `hooked` in a virtualenv (with `virtualenvwrapper` and `pip`)::
+
+    $ mkvirtualenv hooked
+    (hooked) $ pip install hooked
+
+Or if you want to contribute some patches to `hooked`::
 
     $ git clone git@github.com:bbinet/hooked.git
     $ cd hooked/
