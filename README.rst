@@ -35,6 +35,7 @@ Create a configuration file that looks like::
     repository = myrepo
     branch = master
     command = /path/to/script.sh
+
     [hook-all]
     #repository = # will match all repository
     #branch = # will match all branches
@@ -77,3 +78,9 @@ To make a new release, do the following steps::
     $ git tag vX.X.X
     $ git push --tags
     $ python sdist upload
+
+Thanks
+------
+
+Thanks to the `hook-server <https://github.com/iocast/hook-server>`_ and
+`githook <https://github.com/brodul/githook>`_ projects for inspiration.
