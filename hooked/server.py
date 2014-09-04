@@ -28,7 +28,6 @@ cfg.read(['/etc/hooked.cfg', './hooked.cfg'])
 @bottle.get('/')
 def index():
     #return bottle.redirect('https://github.com/bbinet/hooked')
-    global cfg
     resp = {
         'success': True,
         'hooks': [],
@@ -50,7 +49,6 @@ def index():
 
 @bottle.post('/')
 def hook():
-    global cfg
     branch = None
     name = None
     data = None
@@ -96,7 +94,6 @@ def hook():
 
 
 def run():
-    global cfg
     if len(sys.argv) > 1:
         cfg.read(sys.argv[1:])
     debug = cfg.getboolean('server', 'debug')
