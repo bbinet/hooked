@@ -104,7 +104,7 @@ def hook():
             shell=True,
             ).communicate()
         log.info('Running command: %s\n    --> STDOUT: %s\n    --> STDERR: %s'
-                 % (' '.join([items['command'], name, branch])))
+                 % (' '.join([items['command'], name, branch]), out, err))
         resp['hooks'].append({
             'name': hook,
             'repository': items.get('repository'),
