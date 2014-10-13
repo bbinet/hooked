@@ -77,7 +77,7 @@ To make a new release, do the following steps::
     $ git commit -m "bump version to X.X.X"
     $ git tag vX.X.X
     $ git push --tags
-    $ python sdist upload
+    $ python setup.py sdist upload
 
 Thanks
 ------
