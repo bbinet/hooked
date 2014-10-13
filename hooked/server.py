@@ -101,7 +101,6 @@ def hook():
             cwd=items.get('cwd'),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            shell=True,
             ).communicate()
         log.info('Running command: %s\n    --> STDOUT: %s\n    --> STDERR: %s'
                  % (' '.join([items['command'], name, branch]), out, err))
