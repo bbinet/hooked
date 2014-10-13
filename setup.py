@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='hooked',
-    version='0.1rc2',
+    version='0.1',
     description='Run command on GitHub and BitBucket POST request hooks',
     long_description=open('README.rst').read(),
     license='MIT',
