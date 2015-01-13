@@ -9,7 +9,8 @@ import logging
 import bottle
 
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                    format='%(asctime)-15s %(levelname)s: %(message)s')
 log = logging.getLogger(__name__)
 
 cfg = RawConfigParser()
