@@ -60,10 +60,33 @@ def index():
     return resp
 
 
+@bottle.get('/hooks/<repo>/<branch>')
+def run_hooks(repo, branch):
+    if not (repo and branch):
+        return bottle.HTTPError(status=400)
+    hooks = set(cfg.sections())
+    hooks.remove('server')
+    resp = {
+        'success': True,
+        'hooks': [],
+        }
+    for hook in hooks:
+        hook_cfg = dict(cfg.items(hook))
+        if 'repository' in hook_cfg and repo != hook_cfg['repository']:
+            log.debug('"%s" repository don\'t match [%s] hook' % (repo, hook))
+            continue
+        if 'branch' in hook_cfg and branch != hook_cfg['branch']:
+            log.debug('"%s" branch don\'t match [%s] hook' % (branch, hook))
+            continue
+        resp['hooks'].append(run_hook(hook, repo, branch))
+        log.debug(resp)
+    return resp
+
+
 @bottle.post('/')
-def hook():
+def run_git_hooks():
     branch = None
-    name = None
+    repo = None
     data = None
     if bottle.request.json:
         data = bottle.request.json
@@ -73,48 +96,46 @@ def hook():
 
     if data:
         if 'slug' in data['repository']:
-            name = data['repository']['slug']
+            repo = data['repository']['slug']
         elif 'name' in data['repository']:
-            name = data['repository']['name']
+            repo = data['repository']['name']
         if 'ref' in data:
             branch = data['ref'].split('/')[-1]
         elif 'commits' in data and len(data['commits']) > 0:
             branch = data['commits'][0]['branch']
-    if not (name and branch):
-        return bottle.HTTPError(status=400)
 
-    hooks = set(cfg.sections())
-    hooks.remove('server')
-    resp = {
-        'success': True,
-        'hooks': [],
-        }
-    for hook in hooks:
-        items = dict(cfg.items(hook))
-        if 'repository' in items and name != items['repository']:
-            log.debug('"%s" repository don\'t match [%s] hook' % (name, hook))
-            continue
-        if 'branch' in items and branch != items['branch']:
-            log.debug('"%s" branch don\'t match [%s] hook' % (branch, hook))
-            continue
-        out, err = subprocess.Popen(
-            [items['command'], name, branch],
-            cwd=items.get('cwd'),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            ).communicate()
-        log.info('Running command: %s\n    --> STDOUT: %s\n    --> STDERR: %s'
-                 % (' '.join([items['command'], name, branch]), out, err))
-        resp['hooks'].append({
-            'name': hook,
-            'repository': items.get('repository'),
-            'branch': items.get('branch'),
-            'command': items['command'],
-            'cwd': items.get('cwd'),
-            'stdout': out,
-            'stderr': err,
-        })
-    return resp
+    return run_hooks(repo, branch)
+
+
+@bottle.get('/hook/<hook>')
+def run_hook(hook, repo='', branch=''):
+    if not cfg.has_section(hook):
+        return bottle.HTTPError(status=404)
+    # optionally get repository/branch from query params
+    repo = bottle.request.query.get('repository', repo)
+    branch = bottle.request.query.get('branch', branch)
+
+    hook_cfg = dict(cfg.items(hook))
+
+    out, err = subprocess.Popen(
+        [hook_cfg['command'], repo, branch],
+        cwd=hook_cfg.get('cwd'),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        ).communicate()
+    log.info('Running command: %s\n'
+             '--> STDOUT: %s\n'
+             '--> STDERR: %s'
+             % (' '.join([hook_cfg['command'], repo, branch]), out, err))
+    return {
+        'name': hook,
+        'repository': hook_cfg.get('repository'),
+        'branch': hook_cfg.get('branch'),
+        'command': hook_cfg['command'],
+        'cwd': hook_cfg.get('cwd'),
+        'stdout': out,
+        'stderr': err,
+    }
 
 
 def run():
