@@ -67,6 +67,12 @@ See:
 - https://confluence.atlassian.com/display/BITBUCKET/POST+hook+management
 - https://developer.github.com/webhooks/
 
+You can also manually run hooks though GET requests:
+
+  - requesting the /hooks/<repo>/<branch> url will run all hooks that match
+    repository=<repo> and branch=<branch>
+  - requesting the /hook/<hook> url will run the hook which name is <hook>
+
 Release
 -------
 
