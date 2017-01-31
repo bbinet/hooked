@@ -103,6 +103,9 @@ def run_git_hooks():
             branch = data['ref'].split('/')[-1]
         elif 'commits' in data and len(data['commits']) > 0:
             branch = data['commits'][0]['branch']
+        elif 'push' in data and 'changes' in data['push'] \
+                and len(data['push']['changes']) > 0:
+            branch = data['push']['changes'][0]['new']['name']
 
     return run_hooks(repo, branch)
 
