@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='hooked',
-    version='0.3',
+    version='0.4',
     description='Run command on GitHub and BitBucket POST request hooks',
     long_description=open('README.rst').read(),
     license='MIT',
@@ -20,8 +20,7 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Operating System :: Unix",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.6",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.8",
         ],
     entry_points={
         'console_scripts': ['hooked=hooked.server:run']
